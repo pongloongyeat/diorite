@@ -37,10 +37,6 @@ public class Diorite.Application : Gtk.Application {
     }
 
     protected override void activate () {
-        if (image_icon_name == null) {
-            image_icon_name = "dialog-information";
-        }
-
         var granite_settings = Granite.Settings.get_default ();
         var gtk_settings = Gtk.Settings.get_default ();
 
@@ -84,6 +80,10 @@ public class Diorite.Application : Gtk.Application {
         if (secondary_text == null) {
             printerr (_("error: No value for argument secondary-text\n"));
             return -1;
+        }
+
+        if (image_icon_name == null) {
+            image_icon_name = "dialog-information";
         }
 
         return new Application ().run (args);
