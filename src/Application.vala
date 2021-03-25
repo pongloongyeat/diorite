@@ -46,18 +46,15 @@ public class Diorite.Application : Gtk.Application {
             gtk_settings.gtk_application_prefer_dark_theme = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK;
         });
 
-        var message_dialog = new Granite.MessageDialog.with_image_from_icon_name (primary_text, secondary_text, image_icon_name, Gtk.ButtonsType.CLOSE);
-
-        message_dialog.response.connect ((response) => {
-            if (response == Gtk.ResponseType.CLOSE) {
-                message_dialog.destroy ();
-                release ();
-            }
-        });
+        var message_dialog = new Diorite.AbstractDialog (primary_text, secondary_text, image_icon_name);
         message_dialog.show_all ();
 
         // Since there's no window, GTK will exit so it needs to be held and released on exit.
         hold ();
+
+        message_dialog.dialog_close.connect (() => {
+            release ();
+        });
     }
 
     public static int main (string[] args) {
