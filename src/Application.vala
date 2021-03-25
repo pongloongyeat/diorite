@@ -31,7 +31,7 @@ public class Diorite.Application : Gtk.Application {
     public static string image_icon_name;
 
     construct {
-        application_id = "com.github.pongloongyeat.elementary-template-app";
+        application_id = "com.github.pongloongyeat.diorite";
         flags = ApplicationFlags.FLAGS_NONE;
         add_main_option_entries (CLI_OPTIONS);
     }
