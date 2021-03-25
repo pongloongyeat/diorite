@@ -19,9 +19,9 @@ cd build
 ninja
 ```
 
-To install, use ninja install, then execute with `com.github.pongloongyeat.diorite --help` to see available options.
+To install, use ninja install, then execute with `diorite --help` to see available options.
 
 ```bash
 sudo ninja install
-com.github.pongloongyeat.diorite --help
+diorite --help
 ```
