@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-echo "Show a simple message to the user after some operations".
+echo "Show a simple message to the user after some operations"
 
 sleep 3
 

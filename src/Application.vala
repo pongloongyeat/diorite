@@ -59,15 +59,15 @@ public class Diorite.Application : Gtk.Application {
 
     public static int main (string[] args) {
         try {
-			var opt_context = new OptionContext ();
-			opt_context.set_help_enabled (true);
-			opt_context.add_main_entries (CLI_OPTIONS, null);
-			opt_context.parse (ref args);
-		} catch (OptionError e) {
-			printerr (_("error: %s\n"), e.message);
-			printerr (_("Run '%s --help' to see a full list of available command line options.\n"), args[0]);
-			return 1;
-		}
+            var opt_context = new OptionContext ();
+            opt_context.set_help_enabled (true);
+            opt_context.add_main_entries (CLI_OPTIONS, null);
+            opt_context.parse (ref args);
+        } catch (OptionError e) {
+            printerr (_("error: %s\n"), e.message);
+            printerr (_("Run '%s --help' to see a full list of available command line options.\n"), args[0]);
+            return 1;
+        }
 
         if (primary_text == null) {
             printerr (_("error: No value for argument primary-text\n"));
