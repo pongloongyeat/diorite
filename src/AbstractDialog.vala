@@ -22,18 +22,50 @@ public class Diorite.AbstractDialog : Granite.MessageDialog {
     public signal void dialog_close ();
 
     public AbstractDialog (string _primary_text,
-                                 string _secondary_text,
-                                 string _image_icon_name="dialog-information",
-                                 Gtk.ButtonsType _buttons=Gtk.ButtonsType.CLOSE) {
+                           string _secondary_text,
+                           string _image_icon_name="dialog-information",
+                           string ok_text="",
+                           bool suggested=false,
+                           bool destructive=false,
+                           Gtk.ButtonsType _buttons=Gtk.ButtonsType.CLOSE) {
+
+        /* Generally speaking, if there is a request to show
+        text in a suggested action, then it should no longer
+        default to a simple dialog with a "Close" action
+        and should instead show the suggested action and a
+        cancel button. */
+        if (ok_text != "") {
+            _buttons = Gtk.ButtonsType.CANCEL;
+        }
+
         base.with_image_from_icon_name (_primary_text, _secondary_text, _image_icon_name, _buttons);
+
+        /* Need to do this after construct */
+        if (ok_text != "") {
+            var suggested_button = new Gtk.Button.with_label (ok_text);
+
+            // Ignore if both are set to true
+            if (!(suggested && destructive)) {
+                if (suggested) {
+                    suggested_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                }
+
+                if (destructive) {
+                    suggested_button.get_style_context ().add_class (Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION);
+                }
+            }
+
+            add_action_widget (suggested_button, Gtk.ResponseType.ACCEPT);
+        }
     }
 
     construct {
         response.connect ((response) => {
-            if (response == Gtk.ResponseType.CLOSE) {
-                dialog_close ();
-                destroy ();
+            if (response == Gtk.ResponseType.ACCEPT) {
+                // Return a value
             }
+            dialog_close ();
+            destroy ();
         });
     }
 }

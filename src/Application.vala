@@ -20,15 +20,21 @@
 
 public class Diorite.Application : Gtk.Application {
     public const OptionEntry[] CLI_OPTIONS = {
-        { "primary-text", '\0', OptionFlags.NONE, OptionArg.STRING, out primary_text, "Required: Primary text in dialog", null },
-        { "secondary-text", '\0', OptionFlags.NONE, OptionArg.STRING, out secondary_text, "Required: Secondary text in dialog", null },
-        { "image-icon-name", '\0', OptionFlags.NONE, OptionArg.STRING, out image_icon_name, "Image icon name for dialog.", null },
+        { "primary-text", '\0', OptionFlags.NONE, OptionArg.STRING, out primary_text, "(Required) Primary text in dialog.", null },
+        { "secondary-text", '\0', OptionFlags.NONE, OptionArg.STRING, out secondary_text, "(Required) Secondary text in dialog.", null },
+        { "image-icon-name", '\0', OptionFlags.NONE, OptionArg.STRING, out image_icon_name, "Image icon name for dialog. Default: \"dialog-information\"", null },
+        { "ok-text", '\0', OptionFlags.NONE, OptionArg.STRING, out ok_text, "Adds a suggested button with text specified in flag. Ignore\n\t\t\tthis option if there is no suggested action required. Refer to\n\t\t\thttps://elementary.io/docs/human-interface-guidelines#dialogs\n\t\t\tfor more information. Default: \"\"", null },
+        { "suggested", '\0', OptionFlags.NONE, OptionArg.NONE, out suggested, "Styles the suggested action button with Gtk.STYLE_CLASS_SUGGESTED_ACTION.", null },
+        { "destructive", '\0', OptionFlags.NONE, OptionArg.NONE, out destructive, "Styles the suggested action button with Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION.", null },
         { null }
     };
 
     public static string primary_text;
     public static string secondary_text;
     public static string image_icon_name;
+    public static string ok_text;
+    public static bool suggested = false;
+    public static bool destructive = false;
 
     construct {
         application_id = "com.github.pongloongyeat.diorite";
@@ -46,7 +52,14 @@ public class Diorite.Application : Gtk.Application {
             gtk_settings.gtk_application_prefer_dark_theme = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK;
         });
 
-        var message_dialog = new Diorite.AbstractDialog (primary_text, secondary_text, image_icon_name);
+        var message_dialog = new Diorite.AbstractDialog (
+            primary_text,
+            secondary_text,
+            image_icon_name,
+            ok_text,
+            suggested,
+            destructive
+        );
         message_dialog.show_all ();
 
         // Since there's no window, GTK will exit so it needs to be held and released on exit.
@@ -81,6 +94,18 @@ public class Diorite.Application : Gtk.Application {
 
         if (image_icon_name == null) {
             image_icon_name = "dialog-information";
+        }
+
+        if (ok_text == null) {
+            ok_text = "";
+        }
+
+        if (suggested) {
+            suggested = true;
+        }
+
+        if (destructive) {
+            destructive = true;
         }
 
         return new Application ().run (args);
