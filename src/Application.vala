@@ -31,8 +31,8 @@ public class Diorite.Application : Gtk.Application {
 
     public static string primary_text;
     public static string secondary_text;
-    public static string image_icon_name;
-    public static string ok_text;
+    public static string? image_icon_name;
+    public static string? ok_text;
     public static bool suggested = false;
     public static bool destructive = false;
 
@@ -90,22 +90,6 @@ public class Diorite.Application : Gtk.Application {
         if (secondary_text == null) {
             printerr (_("error: No value for argument secondary-text\n"));
             return -1;
-        }
-
-        if (image_icon_name == null) {
-            image_icon_name = "dialog-information";
-        }
-
-        if (ok_text == null) {
-            ok_text = "";
-        }
-
-        if (suggested) {
-            suggested = true;
-        }
-
-        if (destructive) {
-            destructive = true;
         }
 
         return new Application ().run (args);

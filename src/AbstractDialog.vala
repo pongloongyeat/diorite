@@ -23,25 +23,30 @@ public class Diorite.AbstractDialog : Granite.MessageDialog {
 
     public AbstractDialog (string _primary_text,
                            string _secondary_text,
-                           string _image_icon_name="dialog-information",
-                           string ok_text="",
+                           string? _image_icon_name="",
+                           string? ok_text="",
                            bool suggested=false,
                            bool destructive=false,
                            Gtk.ButtonsType _buttons=Gtk.ButtonsType.CLOSE) {
+
+        // Apply defaults
+        if (_image_icon_name == null || _image_icon_name == "") {
+            _image_icon_name = "dialog-information";
+        }
 
         /* Generally speaking, if there is a request to show
         text in a suggested action, then it should no longer
         default to a simple dialog with a "Close" action
         and should instead show the suggested action and a
         cancel button. */
-        if (ok_text != "") {
+        if (ok_text != null && ok_text != "") {
             _buttons = Gtk.ButtonsType.CANCEL;
         }
 
         base.with_image_from_icon_name (_primary_text, _secondary_text, _image_icon_name, _buttons);
 
         /* Need to do this after construct */
-        if (ok_text != "") {
+        if (ok_text != null && ok_text != "") {
             var suggested_button = new Gtk.Button.with_label (ok_text);
 
             // Ignore if both are set to true
